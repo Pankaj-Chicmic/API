@@ -766,7 +766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableAPI: 1
-  endPoints: 2
+  endPoints: 1
   gotResponse:
     m_PersistentCalls:
       m_Calls:
@@ -788,7 +788,7 @@ MonoBehaviour:
       - m_Target: {fileID: 742959634}
         m_TargetAssemblyTypeName: EasyAPI.Example.ExampleAPIHit, Assembly-CSharp
         m_MethodName: APIPRocessed
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -797,6 +797,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  headerKeysAndValues: []
 --- !u!114 &1787891325
 MonoBehaviour:
   m_ObjectHideFlags: 0

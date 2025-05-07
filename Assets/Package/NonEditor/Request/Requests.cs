@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 namespace EasyAPI
@@ -7,7 +8,7 @@ namespace EasyAPI
     {
         public static class Requests
         {
-            public static UnityWebRequestAsyncOperation Post(string route, string jsonData, int requestTimeout, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
+            public static UnityWebRequestAsyncOperation Post(string route, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
                 Debug.Log($"Hitting [POST] ::API:: {route} ::SendingData:: {jsonData}");
                 byte[] bite = System.Text.Encoding.UTF8.GetBytes(jsonData);
@@ -16,10 +17,10 @@ namespace EasyAPI
                     uploadHandler = new UploadHandlerRaw(bite),
                     downloadHandler = new DownloadHandlerBuffer(),
                 };
-                return CommonCallBack(request, "POST", route, onSuccess, onFailure, onConnectionError, requestTimeout);
+                return CommonCallBack(request, "POST", route, headerKeysAndValues, onSuccess, onFailure, onConnectionError, requestTimeout);
             }
 
-            public static UnityWebRequestAsyncOperation PUT(string route, string jsonData, int requestTimeout, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
+            public static UnityWebRequestAsyncOperation PUT(string route, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
                 Debug.Log($"Hitting [PUT] ::API:: {route} ::SendingData:: {jsonData}");
 
@@ -30,10 +31,10 @@ namespace EasyAPI
                     downloadHandler = new DownloadHandlerBuffer(),
                 };
 
-                return CommonCallBack(request, "PUT", route, onSuccess, onFailure, onConnectionError, requestTimeout);
+                return CommonCallBack(request, "PUT", route, headerKeysAndValues, onSuccess, onFailure, onConnectionError, requestTimeout);
             }
 
-            public static UnityWebRequestAsyncOperation Delete(string route, string jsonData, int requestTimeout, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
+            public static UnityWebRequestAsyncOperation Delete(string route, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
                 Debug.Log($"Hitting [DELETE] ::API:: {route} ::SendingData:: {jsonData}");
 
@@ -45,10 +46,10 @@ namespace EasyAPI
                     downloadHandler = new DownloadHandlerBuffer(),
                 };
 
-                return CommonCallBack(request, "DELETE", route, onSuccess, onFailure, onConnectionError, requestTimeout);
+                return CommonCallBack(request, "DELETE", route, headerKeysAndValues, onSuccess, onFailure, onConnectionError, requestTimeout);
             }
 
-            public static UnityWebRequestAsyncOperation Get(string route, string jsonData, int requestTimeout, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
+            public static UnityWebRequestAsyncOperation Get(string route, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
                 Debug.Log($"Hitting [Get] ::API:: {route} ::SendingData:: {jsonData}");
                 byte[] bite = System.Text.Encoding.UTF8.GetBytes(jsonData);
@@ -57,13 +58,20 @@ namespace EasyAPI
                     uploadHandler = new UploadHandlerRaw(bite), // Set the upload handler with the given data
                     downloadHandler = new DownloadHandlerBuffer(), // Set the download handler to store the response data
                 };
-                return CommonCallBack(request, "GET", route, onSuccess, onFailure, onConnectionError, requestTimeout);
+                return CommonCallBack(request, "GET", route, headerKeysAndValues, onSuccess, onFailure, onConnectionError, requestTimeout);
             }
 
             #region CommonCallBack
-            private static UnityWebRequestAsyncOperation CommonCallBack(UnityWebRequest request, string type, string route, Action<string> onSuccess, Action<int, string> onFailure, Action<int> onConnectionError, int requestTimeout)
+            private static UnityWebRequestAsyncOperation CommonCallBack(UnityWebRequest request, string type, string route, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess, Action<int, string> onFailure, Action<int> onConnectionError, int requestTimeout)
             {
                 request.SetRequestHeader("Content-Type", "application/json");
+                if (headerKeysAndValues != null)
+                {
+                    foreach (var item in headerKeysAndValues)
+                    {
+                        request.SetRequestHeader(item.key, item.value);
+                    }
+                }
                 request.timeout = requestTimeout;
 
                 UnityWebRequestAsyncOperation asyncOperation = request.SendWebRequest();

@@ -8,40 +8,38 @@ namespace EasyAPI
         public enum PayLoadEnum
         {
 
-    [DisplayName("None")]
-None,
-    [DisplayName("ExampleRequestPayload")]
-Examplerequestpayload,
-    [DisplayName("LoginData")]
-Logindata,
-    [DisplayName("XYZ")]
-Xyz,
-    [DisplayName("RequestPayloadBase")]
-Requestpayloadbase
-}
+            [DisplayName("None")]
+            None,
+            [DisplayName("ExampleRequestPayload")]
+            Examplerequestpayload,
+            [DisplayName("LoginData")]
+            Logindata,
+            [DisplayName("XYZ")]
+            Xyz,
+            [DisplayName("RequestPayloadBase")]
+            Requestpayloadbase
+        }
 
         [Serializable]
         public enum ResponseEnum
         {
 
-    [DisplayName("ExampleResponsePayload")]
-Exampleresponsepayload,
-    [DisplayName("UserAccount")]
-Useraccount,
-    [DisplayName("RequestResponseBase")]
-Requestresponsebase
-}
+            [DisplayName("ExampleResponsePayload")]
+            Exampleresponsepayload,
+            [DisplayName("UserAccount")]
+            Useraccount,
+            [DisplayName("RequestResponseBase")]
+            Requestresponsebase
+        }
 
         [Serializable]
         public enum EndPoints
         {
 
-    [DisplayName(".com/todos")]
-ComTodos,
-    [DisplayName("11Example1")]
-_11example1,
-    [DisplayName("/access/login")]
-AccessLogin
-}
+            [DisplayName(".com/todos")]
+            ComTodos,
+            [DisplayName("/access/login")]
+            AccessLogin
+        }
     }
 }

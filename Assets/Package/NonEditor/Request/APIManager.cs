@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 namespace EasyAPI
@@ -24,7 +25,7 @@ namespace EasyAPI
                 return true;
             }
 
-            public void HitAPI<T1, T2>(EndPoints endPoint, T1 payload, Action<T2> response = null, Action<float> progress = null) where T1 : RequestPayloadBase where T2 : RequestResponseBase, new()
+            public void HitAPI<T1, T2>(EndPoints endPoint, T1 payload, List<HeaderKeysAndValue> headerKeysAndValues, Action<T2> response = null, Action<float> progress = null) where T1 : RequestPayloadBase where T2 : RequestResponseBase, new()
             {
                 try
                 {
@@ -63,7 +64,7 @@ namespace EasyAPI
                     int retryRemaing = requestClass.retryInfo.overrideValue ? requestClass.retryInfo.overridenValue : settings.GetAPIConfig().defaultRetryCount;
                     int requestTimeout = requestClass.requestTimeout.overrideValue ? requestClass.requestTimeout.overridenValue : settings.GetAPIConfig().defaultRequestTimeout;
 
-                    KeepSendingRequest(requestClass.requestTypes, requestTimeout, retryRemaing, requestClass.endPoint, jsonData, response, progress);
+                    KeepSendingRequest(requestClass.requestTypes, requestTimeout, retryRemaing, requestClass.endPoint, jsonData, headerKeysAndValues, response, progress);
                 }
                 catch (Exception exception)
                 {
@@ -71,16 +72,16 @@ namespace EasyAPI
                     return;
                 }
             }
-            private void KeepSendingRequest<T>(RequestTypes requestTypes, int requestTimeout, int retryRemaining, string endPoint, string jsonData, Action<T> response, Action<float> progress = null) where T : RequestResponseBase, new()
+            private void KeepSendingRequest<T>(RequestTypes requestTypes, int requestTimeout, int retryRemaining, string endPoint, string jsonData, List<HeaderKeysAndValue> headerKeysAndValues, Action<T> response = null, Action<float> progress = null) where T : RequestResponseBase, new()
             {
                 retryRemaining--;
-                UnityWebRequestAsyncOperation unityWebRequest = SendRequest<T>(requestTypes, requestTimeout, endPoint, jsonData, (currResponse) =>
+                UnityWebRequestAsyncOperation unityWebRequest = SendRequest<T>(requestTypes, requestTimeout, endPoint, jsonData, headerKeysAndValues, (currResponse) =>
                 {
                     if (!currResponse.success)
                     {
                         if (retryRemaining > 0)
                         {
-                            KeepSendingRequest(requestTypes, requestTimeout, retryRemaining, endPoint, jsonData, response);
+                            KeepSendingRequest(requestTypes, requestTimeout, retryRemaining, endPoint, jsonData, headerKeysAndValues, response);
                         }
                         else
                         {
@@ -97,13 +98,13 @@ namespace EasyAPI
                     StartCoroutine(DownloadProgress(unityWebRequest, progress));
                 }
             }
-            private UnityWebRequestAsyncOperation SendRequest<T>(RequestTypes requestTypes, int requestTimeout, string endPoint, string jsonData, Action<T> response) where T : RequestResponseBase, new()
+            private UnityWebRequestAsyncOperation SendRequest<T>(RequestTypes requestTypes, int requestTimeout, string endPoint, string jsonData, List<HeaderKeysAndValue> headerKeysAndValues, Action<T> response) where T : RequestResponseBase, new()
             {
                 UnityWebRequestAsyncOperation unityWebRequest = null;
                 switch (requestTypes)
                 {
                     case RequestTypes.GET:
-                        unityWebRequest = Requests.Get(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout,
+                        unityWebRequest = Requests.Get(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout, headerKeysAndValues,
                         (responseString) =>
                         {
                             HandleSuccessResponse(responseString, response);
@@ -119,7 +120,7 @@ namespace EasyAPI
                        );
                         break;
                     case RequestTypes.POST:
-                        unityWebRequest = Requests.Post(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout,
+                        unityWebRequest = Requests.Post(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout, headerKeysAndValues,
                             (responseString) =>
                             {
                                 HandleSuccessResponse(responseString, response);
@@ -132,7 +133,7 @@ namespace EasyAPI
                             });
                         break;
                     case RequestTypes.PUT:
-                        unityWebRequest = Requests.PUT(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout,
+                        unityWebRequest = Requests.PUT(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout, headerKeysAndValues,
                             (responseString) =>
                             {
                                 HandleSuccessResponse(responseString, response);
@@ -145,7 +146,7 @@ namespace EasyAPI
                             });
                         break;
                     case RequestTypes.DELETE:
-                        unityWebRequest = Requests.Delete(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout,
+                        unityWebRequest = Requests.Delete(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout, headerKeysAndValues,
                             (responseString) =>
                             {
                                 HandleSuccessResponse(responseString, response);
@@ -209,7 +210,6 @@ namespace EasyAPI
 
             private IEnumerator DownloadProgress(UnityWebRequestAsyncOperation operation, Action<float> progress)
             {
-                Debug.Log(operation.progress);
                 while (!operation.isDone)
                 {
                     progress?.Invoke(operation.progress);

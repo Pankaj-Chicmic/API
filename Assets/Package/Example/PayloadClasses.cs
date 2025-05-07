@@ -11,7 +11,8 @@ namespace EasyAPI
             public string exampleField;
         }
         [Serializable]
-        public class XYZ : RequestPayloadBase {
+        public class XYZ : RequestPayloadBase
+        {
 
         }
         [Serializable]

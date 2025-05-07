@@ -17,10 +17,19 @@ namespace EasyAPI
         }
         public static string GetDisplayName(this Enum value)
         {
-            return value.GetType()
-                        .GetMember(value.ToString())[0]
-                        .GetCustomAttribute<DisplayNameAttribute>()?
-                        .Name ?? value.ToString();
+            var type = value.GetType();
+            var member = type.GetMember(value.ToString());
+
+            if (member.Length > 0)
+            {
+                var attr = member[0].GetCustomAttribute<DisplayNameAttribute>();
+                return attr?.Name ?? value.ToString();
+            }
+            else
+            {
+                Debug.LogWarning($"Could not find member for enum value '{value}' of type '{type}'. Returning ToString().");
+                return value.ToString();
+            }
         }
         public static Type FindTypeByName(string typeName)
         {
