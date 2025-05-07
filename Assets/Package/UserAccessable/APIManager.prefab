@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2737763275986784281}
   - component: {fileID: 3460309945507990756}
   m_Layer: 0
-  m_Name: APIHander
+  m_Name: APIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3663487967107848674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5d3172d6340fcc478b4681183131f19, type: 3}
+  m_Script: {fileID: 11500000, guid: aafbf72e1f5800f4cbe6d8cbc7cddff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 798c12d4372907e44a17ecdaf08f5c00, type: 2}

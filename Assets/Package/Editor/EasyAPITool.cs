@@ -86,7 +86,7 @@ namespace EasyAPI
                 string fullPath;
                 if (enumRegistry.GetEnumData(nameof(PayLoadEnum), out fullPath))
                 {
-                    bool result = EnumInheritanceUpdater.UpdateEnumFromInheritance(nameof(PayLoadEnum), fullPath, nameof(RequestPayloadBase));
+                    bool result = EnumInheritanceUpdater.UpdateEnumFromInheritance(nameof(PayLoadEnum), fullPath, nameof(RequestPayloadBase), true, true);
                     if (result)
                     {
                         Debug.Log($"Successfully updated enum '{nameof(PayLoadEnum)}' via static call.");
@@ -102,7 +102,7 @@ namespace EasyAPI
                 }
                 if (enumRegistry.GetEnumData(nameof(ResponseEnum), out fullPath))
                 {
-                    bool result = EnumInheritanceUpdater.UpdateEnumFromInheritance(nameof(ResponseEnum), fullPath, nameof(RequestResponseBase));
+                    bool result = EnumInheritanceUpdater.UpdateEnumFromInheritance(nameof(ResponseEnum), fullPath, nameof(RequestResponseBase), false, true);
                     if (result)
                     {
                         Debug.Log($"Successfully updated enum '{nameof(ResponseEnum)}' via static call.");
@@ -123,7 +123,7 @@ namespace EasyAPI
                     {
                         namesOfEnums.Add(requestClass.endPoint);
                     }
-                    EnumAdder.UpdateEnumFile(fullPath, nameof(RunTime.EndPoints), namesOfEnums);
+                    EnumAdder.UpdateEnumFile(fullPath, nameof(RunTime.EndPoints), namesOfEnums, false);
                 }
                 else
                 {
@@ -135,19 +135,19 @@ namespace EasyAPI
             [MenuItem("Tools/EasyAPI/API Hander")]
             public static void InstantiateMyPrefab()
             {
-                const string APIHander = "APIHander";
+                const string APIManager = "APIManager";
 
-                string[] guids = AssetDatabase.FindAssets($"{APIHander} t:Prefab");
+                string[] guids = AssetDatabase.FindAssets($"{APIManager} t:Prefab");
 
                 if (guids.Length == 0)
                 {
-                    Debug.LogWarning($"No prefab named '{APIHander}' found in the project.");
+                    Debug.LogWarning($"No prefab named '{APIManager}' found in the project.");
                     return;
                 }
 
                 if (guids.Length > 1)
                 {
-                    Debug.LogError($"Multiple prefabs named '{APIHander}' found. Please ensure there is only one.");
+                    Debug.LogError($"Multiple prefabs named '{APIManager}' found. Please ensure there is only one.");
                     return;
                 }
 
@@ -164,7 +164,7 @@ namespace EasyAPI
 
                 if (instance != null)
                 {
-                    Undo.RegisterCreatedObjectUndo(instance, APIHander);
+                    Undo.RegisterCreatedObjectUndo(instance, APIManager);
                     Selection.activeGameObject = instance;
                     Debug.Log($"Instantiated '{prefab.name}' in scene.");
                 }

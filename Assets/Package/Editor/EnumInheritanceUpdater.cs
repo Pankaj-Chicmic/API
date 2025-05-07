@@ -20,7 +20,7 @@ namespace EasyAPI
             public static bool UpdateEnumFromInheritance(
                 string enumName,
                 string enumFilePath,
-                string baseClassName)
+                string baseClassName, bool addNone, bool addSelf)
             {
                 if (string.IsNullOrWhiteSpace(enumName) || string.IsNullOrWhiteSpace(enumFilePath) || string.IsNullOrWhiteSpace(baseClassName))
                 {
@@ -65,8 +65,24 @@ namespace EasyAPI
                     Debug.Log($"Found {inheritedTypes.Count} classes inheriting from '{baseClassName}'.");
                 }
 
+                foreach (var item in inheritedTypes)
+                {
+                    foreach (var itemNew in inheritedTypes)
+                    {
+                        if (item.Name == itemNew.Name && item != itemNew)
+                        {
+                            Debug.LogError($"Name of two Response or Payload classes can not be same. Same Class Name is {item.Name}");
+                            return false;
+                        }
+                    }
+                }
+
+                if (addSelf)
+                {
+                    inheritedTypes.Add(baseType);
+                }
                 // --- File Update ---
-                bool success = EnumAdder.UpdateEnumFile(fullPath, enumName, inheritedTypes);
+                bool success = EnumAdder.UpdateEnumFile(fullPath, enumName, inheritedTypes, addNone);
 
                 if (success)
                 {

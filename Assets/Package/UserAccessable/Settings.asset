@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiConfig: {fileID: 11400000, guid: 0463abb44195cf244851f17b05868728, type: 2}
   endPoints:
-  - endPoint: Example
+  - endPoint: .com/todos
     requestTypes: 0
     payLoadClass: 0
     responseClass: 0
-  - endPoint: Example
+  - endPoint: 11Example1
     requestTypes: 0
-    payLoadClass: 0
-    responseClass: 0
+    payLoadClass: 1
+    responseClass: 1
+  - endPoint: XYZ
+    requestTypes: 0
+    payLoadClass: 2
+    responseClass: 1

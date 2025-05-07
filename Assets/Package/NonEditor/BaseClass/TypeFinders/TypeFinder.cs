@@ -4,8 +4,24 @@ using System.Reflection;
 using UnityEngine;
 namespace EasyAPI
 {
-    public class TypeFinder
+    public static class TypeFinder
     {
+        [AttributeUsage(AttributeTargets.Field)]
+        public class DisplayNameAttribute : Attribute
+        {
+            public string Name { get; }
+            public DisplayNameAttribute(string Name)
+            {
+                this.Name = Name;
+            }
+        }
+        public static string GetDisplayName(this Enum value)
+        {
+            return value.GetType()
+                        .GetMember(value.ToString())[0]
+                        .GetCustomAttribute<DisplayNameAttribute>()?
+                        .Name ?? value.ToString();
+        }
         public static Type FindTypeByName(string typeName)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

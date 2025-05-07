@@ -6,7 +6,7 @@ namespace EasyAPI
 {
     namespace RunTime
     {
-        public class APIHandler : MonoBehaviourSingletonPersistent<APIHandler>
+        public class APIManager : MonoBehaviourSingletonPersistent<APIManager>
         {
             [SerializeField] private Settings settings;
 
@@ -18,19 +18,34 @@ namespace EasyAPI
                     if (requestClass == null)
                     {
                         HandleOtherResponse(-2, response, $"Request Class Not Found For End Point {endPoint}");
+                        return;
                     }
 
-                    if (payload.GetType() != TypeFinderRuntime.FindTypeByName(requestClass.payLoadClass.ToString()))
+                    if ((new T2()).GetType().Name != requestClass.responseClass.GetDisplayName())
                     {
-                        HandleOtherResponse(-2, response, $"Wrong PayloadType :: Expected {TypeFinderRuntime.FindTypeByName(requestClass.payLoadClass.ToString()).Name} Has :: {payload.GetType().Name}");
+                        HandleOtherResponse(-2, response, $"Wrong Response Type :: Expected {requestClass.responseClass.GetDisplayName()} Has :: {(new T2()).GetType().Name}");
+                        return;
                     }
 
-                    if ((new T2()).GetType() != TypeFinderRuntime.FindTypeByName(requestClass.responseClass.ToString()))
+                    if (requestClass.payLoadClass == PayLoadEnum.None)
                     {
-                        HandleOtherResponse(-2, response, $"Wrong Response Type :: Expected {TypeFinderRuntime.FindTypeByName(requestClass.responseClass.ToString()).Name} Has :: {(new T2()).GetType().Name}");
+                        if (payload != null)
+                        {
+                            HandleOtherResponse(-2, response, $"Wrong PayloadType :: Expected None \"Null\" Has :: {payload.GetType().Name}");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (payload.GetType().Name != requestClass.payLoadClass.GetDisplayName())
+                        {
+                            HandleOtherResponse(-2, response, $"Wrong PayloadType :: Expected {requestClass.payLoadClass.GetDisplayName()}");
+                            return;
+                        }
                     }
 
-                    string jsonData = JsonUtility.ToJson(payload);
+
+                    string jsonData = payload == null ? " " : JsonUtility.ToJson(payload);
                     int retryRemaing = settings.GetAPIConfig().defaultRetryCount;
 
                     KeepSendingRequest(requestClass.requestTypes, settings.GetAPIConfig().defaultRequestTimeout, retryRemaing, requestClass.endPoint, jsonData, response);
@@ -38,6 +53,7 @@ namespace EasyAPI
                 catch (Exception exception)
                 {
                     HandleOtherResponse(-2, response, "API HIT FAILED " + exception);
+                    return;
                 }
             }
             private void KeepSendingRequest<T>(RequestTypes requestTypes, int requestTimeout, int retryRemaining, string endPoint, string jsonData, Action<T> response, Action<float> progress = null) where T : RequestResponseBase, new()
@@ -86,41 +102,41 @@ namespace EasyAPI
                     case RequestTypes.POST:
                         unityWebRequest = Requests.Post(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout,
                             (responseString) =>
-                        {
-                            HandleSuccessResponse(responseString, response);
-                        }, (code, responseString) =>
-                        {
-                            HandleFailureResponse(code, responseString, response);
-                        }, (code) =>
-                        {
-                            HandleOtherResponse(code, response);
-                        });
+                            {
+                                HandleSuccessResponse(responseString, response);
+                            }, (code, responseString) =>
+                            {
+                                HandleFailureResponse(code, responseString, response);
+                            }, (code) =>
+                            {
+                                HandleOtherResponse(code, response);
+                            });
                         break;
                     case RequestTypes.PUT:
                         unityWebRequest = Requests.PUT(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout,
                             (responseString) =>
-                        {
-                            HandleSuccessResponse(responseString, response);
-                        }, (code, responseString) =>
-                        {
-                            HandleFailureResponse(code, responseString, response);
-                        }, (code) =>
-                        {
-                            HandleOtherResponse(code, response);
-                        });
+                            {
+                                HandleSuccessResponse(responseString, response);
+                            }, (code, responseString) =>
+                            {
+                                HandleFailureResponse(code, responseString, response);
+                            }, (code) =>
+                            {
+                                HandleOtherResponse(code, response);
+                            });
                         break;
                     case RequestTypes.DELETE:
                         unityWebRequest = Requests.Delete(settings.GetAPIConfig().baseUrl + endPoint.ToString(), jsonData, requestTimeout,
                             (responseString) =>
-                        {
-                            HandleSuccessResponse(responseString, response);
-                        }, (code, responseString) =>
-                        {
-                            HandleFailureResponse(code, responseString, response);
-                        }, (code) =>
-                        {
-                            HandleOtherResponse(code, response);
-                        });
+                            {
+                                HandleSuccessResponse(responseString, response);
+                            }, (code, responseString) =>
+                            {
+                                HandleFailureResponse(code, responseString, response);
+                            }, (code) =>
+                            {
+                                HandleOtherResponse(code, response);
+                            });
                         break;
                 }
                 return unityWebRequest;

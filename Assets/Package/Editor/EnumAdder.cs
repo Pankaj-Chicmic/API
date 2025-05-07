@@ -10,10 +10,14 @@ namespace EasyAPI
     {
         public class EnumAdder
         {
-            public static bool UpdateEnumFile(string fullPath, string targetEnumName, List<String> typesToInclude)
+            public static bool UpdateEnumFile(string fullPath, string targetEnumName, List<String> typesToInclude, bool addNone)
             {
                 try
                 {
+                    if (addNone)
+                    {
+                        typesToInclude.Insert(0, "None");
+                    }
                     string fileContent = File.ReadAllText(fullPath);
 
                     // --- Build the new enum content ---
@@ -26,7 +30,9 @@ namespace EasyAPI
                         }
 
                         enumContentBuilder.Append("    "); // Indentation
-                        enumContentBuilder.Append(typesToInclude[i]);
+                        enumContentBuilder.Append($"[DisplayName(\"{typesToInclude[i]}\")]");
+                        enumContentBuilder.AppendLine();
+                        enumContentBuilder.Append(ToEnumCompatible(typesToInclude[i]));
                         if (i < typesToInclude.Count - 1)
                         {
                             enumContentBuilder.Append(",");
@@ -109,14 +115,44 @@ namespace EasyAPI
                 }
             }
             // Reads the file, modifies the enum section, and writes it back
-            public static bool UpdateEnumFile(string fullPath, string targetEnumName, List<Type> typesToInclude)
+            public static bool UpdateEnumFile(string fullPath, string targetEnumName, List<Type> typesToInclude, bool addNone)
             {
                 List<string> namesOfTypes = new List<string>();
                 for (int i = 0; i < typesToInclude.Count; i++)
                 {
                     namesOfTypes.Add(typesToInclude[i].Name);
                 }
-                return UpdateEnumFile(fullPath, targetEnumName, namesOfTypes);
+                return UpdateEnumFile(fullPath, targetEnumName, namesOfTypes, addNone);
+            }
+
+            private static string ToEnumCompatible(string input)
+            {
+                if (string.IsNullOrWhiteSpace(input))
+                    return "_";
+
+                // Remove all invalid characters (keep letters, numbers, and underscore)
+                var cleaned = Regex.Replace(input, @"[^a-zA-Z0-9_]+", "_");
+
+                // Split by underscores or numbers and capitalize parts
+                var parts = cleaned.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var sb = new StringBuilder();
+                foreach (var part in parts)
+                {
+                    if (part.Length == 0) continue;
+
+                    // Capitalize first letter, keep rest lowercase
+                    var word = char.ToUpper(part[0]) + part.Substring(1).ToLower();
+                    sb.Append(word);
+                }
+
+                var result = sb.ToString();
+
+                // Ensure it starts with a letter or underscore
+                if (!Regex.IsMatch(result, @"^[A-Za-z_]"))
+                    result = "_" + result;
+
+                return result;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using static EasyAPI.TypeFinder;
 namespace EasyAPI
 {
     namespace RunTime
@@ -7,22 +8,36 @@ namespace EasyAPI
         public enum PayLoadEnum
         {
 
-    ExampleRequestPayload
+    [DisplayName("None")]
+None,
+    [DisplayName("ExampleRequestPayload")]
+Examplerequestpayload,
+    [DisplayName("XYZ")]
+Xyz,
+    [DisplayName("RequestPayloadBase")]
+Requestpayloadbase
 }
 
         [Serializable]
         public enum ResponseEnum
         {
 
-    ExampleResponsePayload
+    [DisplayName("ExampleResponsePayload")]
+Exampleresponsepayload,
+    [DisplayName("RequestResponseBase")]
+Requestresponsebase
 }
 
         [Serializable]
         public enum EndPoints
         {
 
-    Example,
-    Example1
+    [DisplayName(".com/todos")]
+ComTodos,
+    [DisplayName("11Example1")]
+_11example1,
+    [DisplayName("XYZ")]
+Xyz
 }
     }
 }

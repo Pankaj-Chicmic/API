@@ -10,10 +10,9 @@ namespace EasyAPI
             public string exampleField;
         }
 
-        [System.Serializable]
-        public class ExampleResponsePayload : RequestResponseBase
-        {
-            public string exampleField;
+        public class XYZ : RequestPayloadBase {
+
         }
+
     }
 }
