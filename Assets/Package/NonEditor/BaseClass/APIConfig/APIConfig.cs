@@ -7,7 +7,9 @@ namespace EasyAPI
         public class APIConfig : ScriptableObject
         {
             public string baseUrl;
+            [Range(1, 100)]
             public int defaultRequestTimeout;
+            [Range(1, 100)]
             public int defaultRetryCount;
         }
     }

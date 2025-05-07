@@ -23,7 +23,6 @@ namespace EasyAPI
             {
                 foreach (var item in endPoints)
                 {
-                    Debug.Log(item.endPoint +" "+endPoint.GetDisplayName());
                     if (item.endPoint == endPoint.GetDisplayName())
                     {
                         return item;

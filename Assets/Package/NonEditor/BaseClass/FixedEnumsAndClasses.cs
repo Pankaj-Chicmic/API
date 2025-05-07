@@ -1,5 +1,6 @@
 using System;
 using UnityEditor;
+using UnityEngine;
 
 namespace EasyAPI
 {
@@ -12,16 +13,8 @@ namespace EasyAPI
             public RequestTypes requestTypes;
             public PayLoadEnum payLoadClass;
             public ResponseEnum responseClass;
-            public RequestClass CloneMe()
-            {
-                return new RequestClass()
-                {
-                    endPoint = endPoint,
-                    requestTypes = requestTypes,
-                    payLoadClass = payLoadClass,
-                    responseClass = responseClass
-                };
-            }
+            public IntAndBool requestTimeout;
+            public IntAndBool retryInfo;
         }
 
         [Serializable]
@@ -38,6 +31,14 @@ namespace EasyAPI
         {
             public string enumFullName;
             public MonoScript enumFile;
+        }
+
+        [System.Serializable]
+        public class IntAndBool
+        {
+            public bool overrideValue;
+            [Range(1, 100)]
+            public int overridenValue = 1;
         }
     }
 }

@@ -63,13 +63,14 @@ namespace EasyAPI
             #region CommonCallBack
             private static UnityWebRequestAsyncOperation CommonCallBack(UnityWebRequest request, string type, string route, Action<string> onSuccess, Action<int, string> onFailure, Action<int> onConnectionError, int requestTimeout)
             {
+                request.SetRequestHeader("Content-Type", "application/json");
                 request.timeout = requestTimeout;
 
                 UnityWebRequestAsyncOperation asyncOperation = request.SendWebRequest();
 
                 asyncOperation.completed += operation =>
                 {
-                    Debug.Log($"Hit Response [GET] ::API:: {route} ::Result:: {request.result} ::ResponseCode:: {request.responseCode} ::ReceivedData:: {request.downloadHandler.text}");
+                    Debug.Log($"Hit Response [{request.method}] ::API:: {route} ::Result:: {request.result} ::ResponseCode:: {request.responseCode} ::ReceivedData:: {request.downloadHandler.text}");
                     if (request.result == UnityWebRequest.Result.ConnectionError)
                     {
                         onConnectionError?.Invoke(-1);

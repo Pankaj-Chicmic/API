@@ -1,4 +1,5 @@
 using EasyAPI.RunTime;
+using System;
 
 namespace EasyAPI
 {
@@ -9,10 +10,15 @@ namespace EasyAPI
         {
             public string exampleField;
         }
-
+        [Serializable]
         public class XYZ : RequestPayloadBase {
 
         }
-
+        [Serializable]
+        public class LoginData : RequestPayloadBase
+        {
+            public string email;
+            public string password;
+        }
     }
 }

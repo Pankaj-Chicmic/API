@@ -16,13 +16,31 @@ MonoBehaviour:
   endPoints:
   - endPoint: .com/todos
     requestTypes: 0
-    payLoadClass: 0
+    payLoadClass: 1
     responseClass: 0
+    requestTimeout:
+      overrideValue: 0
+      overridenValue: 1
+    retryInfo:
+      overrideValue: 0
+      overridenValue: 1
   - endPoint: 11Example1
     requestTypes: 0
     payLoadClass: 1
     responseClass: 1
-  - endPoint: XYZ
-    requestTypes: 0
+    requestTimeout:
+      overrideValue: 0
+      overridenValue: 1
+    retryInfo:
+      overrideValue: 0
+      overridenValue: 1
+  - endPoint: /access/login
+    requestTypes: 1
     payLoadClass: 2
     responseClass: 1
+    requestTimeout:
+      overrideValue: 0
+      overridenValue: 1
+    retryInfo:
+      overrideValue: 0
+      overridenValue: 1

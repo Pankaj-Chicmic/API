@@ -12,6 +12,8 @@ namespace EasyAPI
 None,
     [DisplayName("ExampleRequestPayload")]
 Examplerequestpayload,
+    [DisplayName("LoginData")]
+Logindata,
     [DisplayName("XYZ")]
 Xyz,
     [DisplayName("RequestPayloadBase")]
@@ -24,6 +26,8 @@ Requestpayloadbase
 
     [DisplayName("ExampleResponsePayload")]
 Exampleresponsepayload,
+    [DisplayName("UserAccount")]
+Useraccount,
     [DisplayName("RequestResponseBase")]
 Requestresponsebase
 }
@@ -36,8 +40,8 @@ Requestresponsebase
 ComTodos,
     [DisplayName("11Example1")]
 _11example1,
-    [DisplayName("XYZ")]
-Xyz
+    [DisplayName("/access/login")]
+AccessLogin
 }
     }
 }

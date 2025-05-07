@@ -10,6 +10,20 @@ namespace EasyAPI
         {
             [SerializeField] private Settings settings;
 
+            public bool GetReponseTypeAndPayloadType(EndPoints endPoint, out PayLoadEnum payLoadEnum, out ResponseEnum responseEnum)
+            {
+                RequestClass requestClass = settings.GetRequestClass(endPoint);
+                if (requestClass == null)
+                {
+                    payLoadEnum = PayLoadEnum.None;
+                    responseEnum = ResponseEnum.Requestresponsebase;
+                    return false;
+                }
+                payLoadEnum = requestClass.payLoadClass;
+                responseEnum = requestClass.responseClass;
+                return true;
+            }
+
             public void HitAPI<T1, T2>(EndPoints endPoint, T1 payload, Action<T2> response = null, Action<float> progress = null) where T1 : RequestPayloadBase where T2 : RequestResponseBase, new()
             {
                 try
@@ -46,9 +60,10 @@ namespace EasyAPI
 
 
                     string jsonData = payload == null ? " " : JsonUtility.ToJson(payload);
-                    int retryRemaing = settings.GetAPIConfig().defaultRetryCount;
+                    int retryRemaing = requestClass.retryInfo.overrideValue ? requestClass.retryInfo.overridenValue : settings.GetAPIConfig().defaultRetryCount;
+                    int requestTimeout = requestClass.requestTimeout.overrideValue ? requestClass.requestTimeout.overridenValue : settings.GetAPIConfig().defaultRequestTimeout;
 
-                    KeepSendingRequest(requestClass.requestTypes, settings.GetAPIConfig().defaultRequestTimeout, retryRemaing, requestClass.endPoint, jsonData, response);
+                    KeepSendingRequest(requestClass.requestTypes, requestTimeout, retryRemaing, requestClass.endPoint, jsonData, response, progress);
                 }
                 catch (Exception exception)
                 {
@@ -71,6 +86,10 @@ namespace EasyAPI
                         {
                             response?.Invoke(currResponse);
                         }
+                    }
+                    else
+                    {
+                        response?.Invoke(currResponse);
                     }
                 });
                 if (unityWebRequest != null && progress != null)
@@ -147,10 +166,10 @@ namespace EasyAPI
                 T responseData = new T();
                 try
                 {
+                    responseData = JsonUtility.FromJson<T>(responseString);
                     responseData.success = false;
                     responseData.responseCode = responseCode;
                     responseData.failureMessage = "Failed From Backend";
-                    responseData = JsonUtility.FromJson<T>(responseString);
                     response?.Invoke(responseData);
                 }
                 catch (Exception ex)
@@ -166,8 +185,8 @@ namespace EasyAPI
                 T responseData = new T();
                 try
                 {
-                    responseData.success = true;
                     responseData = JsonUtility.FromJson<T>(responseString);
+                    responseData.success = true;
                     response?.Invoke(responseData);
                 }
                 catch (Exception ex)
@@ -190,6 +209,7 @@ namespace EasyAPI
 
             private IEnumerator DownloadProgress(UnityWebRequestAsyncOperation operation, Action<float> progress)
             {
+                Debug.Log(operation.progress);
                 while (!operation.isDone)
                 {
                     progress?.Invoke(operation.progress);

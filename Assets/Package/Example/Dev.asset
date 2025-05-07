@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c71901f0a5d13a943bfda621254233d9, type: 3}
   m_Name: Dev
   m_EditorClassIdentifier: 
-  baseUrl: https://jsonplaceholder.typicode
+  baseUrl: https://us-central1-dragonlords-34b68.cloudfunctions.net/app
   defaultRequestTimeout: 8
   defaultRetryCount: 3
