@@ -21,7 +21,7 @@ namespace EasyAPI
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    APIManager.Instance.HitAPI<XYZ, ExampleResponsePayload>(EndPoints.ComTodos, null, null, (response) =>
+                    APIManager.Instance.HitAPI<LoginData, ExampleResponsePayload>(EndPoints.ComTodos, null, null, (response) =>
                     {
                         if (response.success)
                         {
@@ -52,7 +52,28 @@ namespace EasyAPI
             {
                 if (requestResponseBase is UserAccount loginResponse)
                 {
-                    Debug.Log(JsonUtility.ToJson(loginResponse));
+                    if (loginResponse.success)
+                    {
+                        Debug.Log($"API Hit is successfull, got json Data as  {JsonUtility.ToJson(loginResponse)}");
+                    }
+                    else
+                    {
+                        if (loginResponse.responseCode == -1)
+                        {
+                            // This Means Error is due to Network
+                            Debug.Log($"API Hit has Failed,\n Response Code is {loginResponse.responseCode} \n Failure Message Is {loginResponse.failureMessage} \n Json Is {JsonUtility.ToJson(loginResponse)}");
+                        }
+                        else if (loginResponse.responseCode == -2)
+                        {
+                            // This Means Error is due to API HIT METHOD CALL
+                            Debug.Log($"API Hit has Failed,\n Response Code is  {loginResponse.responseCode} \n Failure Message Is {loginResponse.failureMessage} \n Json Is {JsonUtility.ToJson(loginResponse)}");
+                        }
+                        else
+                        {
+                            // This Means Error has come from backend
+                            Debug.Log($"API Hit has Failed,\n Response Code is {loginResponse.responseCode} \n Failure Message Is {loginResponse.failureMessage} \n Json Is {JsonUtility.ToJson(loginResponse)}");
+                        }
+                    }
                 }
             }
             public void APIPRocessed(ValueFloat valueFloat)

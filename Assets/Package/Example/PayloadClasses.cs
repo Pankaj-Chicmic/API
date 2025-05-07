@@ -10,11 +10,7 @@ namespace EasyAPI
         {
             public string exampleField;
         }
-        [Serializable]
-        public class XYZ : RequestPayloadBase
-        {
 
-        }
         [Serializable]
         public class LoginData : RequestPayloadBase
         {

@@ -18,8 +18,16 @@ namespace EasyAPI
 
                         if (_instance == null)
                         {
-                            GameObject obj = new GameObject(typeof(T).Name);
-                            _instance = obj.AddComponent<T>();
+                            T[] prefabs = Resources.LoadAll<T>("Singletons");
+                            if (prefabs.Length > 0)
+                            {
+                                _instance = GameObject.Instantiate(prefabs[0]).GetComponent<T>();
+                            }
+                            if (_instance == null)
+                            {
+                                GameObject obj = new GameObject(typeof(T).Name);
+                                _instance = obj.AddComponent<T>();
+                            }
                         }
                         DontDestroyOnLoad(_instance.gameObject);
                     }
