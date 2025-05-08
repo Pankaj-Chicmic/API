@@ -4,12 +4,28 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+
 namespace EasyAPI
 {
     namespace RunTime
     {
+        /// <summary>
+        /// Contains methods for sending HTTP requests using Unity's UnityWebRequest.
+        /// </summary>
         public static class Requests
         {
+            /// <summary>
+            /// Sends a POST request to the specified route.
+            /// </summary>
+            /// <param name="route">The route to send the request to.</param>
+            /// <param name="dataType">The data type (Json or Form) to be sent.</param>
+            /// <param name="jsonData">The data to send in the request body.</param>
+            /// <param name="requestTimeout">The timeout duration for the request.</param>
+            /// <param name="headerKeysAndValues">The headers to include in the request.</param>
+            /// <param name="onSuccess">Callback function to be invoked on a successful response.</param>
+            /// <param name="onFailure">Callback function to be invoked on failure response.</param>
+            /// <param name="onConnectionError">Callback function to be invoked on connection error.</param>
+            /// <returns>The UnityWebRequestAsyncOperation representing the request.</returns>
             public static UnityWebRequestAsyncOperation Post(string route, DataType dataType, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
                 #region Debug
@@ -32,6 +48,18 @@ namespace EasyAPI
                 return CommonCallBack(request, route, headerKeysAndValues, onSuccess, onFailure, onConnectionError, requestTimeout);
             }
 
+            /// <summary>
+            /// Sends a PUT request to the specified route.
+            /// </summary>
+            /// <param name="route">The route to send the request to.</param>
+            /// <param name="dataType">The data type (Json or Form) to be sent.</param>
+            /// <param name="jsonData">The data to send in the request body.</param>
+            /// <param name="requestTimeout">The timeout duration for the request.</param>
+            /// <param name="headerKeysAndValues">The headers to include in the request.</param>
+            /// <param name="onSuccess">Callback function to be invoked on a successful response.</param>
+            /// <param name="onFailure">Callback function to be invoked on failure response.</param>
+            /// <param name="onConnectionError">Callback function to be invoked on connection error.</param>
+            /// <returns>The UnityWebRequestAsyncOperation representing the request.</returns>
             public static UnityWebRequestAsyncOperation PUT(string route, DataType dataType, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
                 #region Debug
@@ -54,6 +82,18 @@ namespace EasyAPI
                 return CommonCallBack(request, route, headerKeysAndValues, onSuccess, onFailure, onConnectionError, requestTimeout);
             }
 
+            /// <summary>
+            /// Sends a DELETE request to the specified route.
+            /// </summary>
+            /// <param name="route">The route to send the request to.</param>
+            /// <param name="dataType">The data type (Json or Form) to be sent.</param>
+            /// <param name="jsonData">The data to send in the request body.</param>
+            /// <param name="requestTimeout">The timeout duration for the request.</param>
+            /// <param name="headerKeysAndValues">The headers to include in the request.</param>
+            /// <param name="onSuccess">Callback function to be invoked on a successful response.</param>
+            /// <param name="onFailure">Callback function to be invoked on failure response.</param>
+            /// <param name="onConnectionError">Callback function to be invoked on connection error.</param>
+            /// <returns>The UnityWebRequestAsyncOperation representing the request.</returns>
             public static UnityWebRequestAsyncOperation Delete(string route, DataType dataType, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
                 #region Debug
@@ -76,9 +116,20 @@ namespace EasyAPI
                 return CommonCallBack(request, route, headerKeysAndValues, onSuccess, onFailure, onConnectionError, requestTimeout);
             }
 
+            /// <summary>
+            /// Sends a GET request to the specified route.
+            /// </summary>
+            /// <param name="route">The route to send the request to.</param>
+            /// <param name="dataType">The data type (Json or Form) to be sent.</param>
+            /// <param name="jsonData">The data to send in the request body.</param>
+            /// <param name="requestTimeout">The timeout duration for the request.</param>
+            /// <param name="headerKeysAndValues">The headers to include in the request.</param>
+            /// <param name="onSuccess">Callback function to be invoked on a successful response.</param>
+            /// <param name="onFailure">Callback function to be invoked on failure response.</param>
+            /// <param name="onConnectionError">Callback function to be invoked on connection error.</param>
+            /// <returns>The UnityWebRequestAsyncOperation representing the request.</returns>
             public static UnityWebRequestAsyncOperation Get(string route, DataType dataType, string jsonData, int requestTimeout, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess = null, Action<int, string> onFailure = null, Action<int> onConnectionError = null)
             {
-
                 #region Debug
 
                 string headersAre = "";
@@ -101,6 +152,12 @@ namespace EasyAPI
 
             #region CommonCallBack
 
+            /// <summary>
+            /// Converts the given JSON data into a byte array based on the specified data type.
+            /// </summary>
+            /// <param name="jsonData">The JSON data to be converted.</param>
+            /// <param name="dataType">The data type (Json or Form).</param>
+            /// <returns>The byte array representation of the data.</returns>
             private static byte[] GetBites(string jsonData, DataType dataType)
             {
                 byte[] bite = null;
@@ -120,6 +177,18 @@ namespace EasyAPI
                 }
                 return bite;
             }
+
+            /// <summary>
+            /// Sends the request and handles the response.
+            /// </summary>
+            /// <param name="request">The UnityWebRequest to send.</param>
+            /// <param name="route">The route of the API.</param>
+            /// <param name="headerKeysAndValues">The headers for the request.</param>
+            /// <param name="onSuccess">Callback function to be invoked on success.</param>
+            /// <param name="onFailure">Callback function to be invoked on failure.</param>
+            /// <param name="onConnectionError">Callback function to be invoked on connection error.</param>
+            /// <param name="requestTimeout">The timeout duration for the request.</param>
+            /// <returns>The UnityWebRequestAsyncOperation representing the request.</returns>
             private static UnityWebRequestAsyncOperation CommonCallBack(UnityWebRequest request, string route, List<HeaderKeysAndValue> headerKeysAndValues, Action<string> onSuccess, Action<int, string> onFailure, Action<int> onConnectionError, int requestTimeout)
             {
                 if (headerKeysAndValues != null)
@@ -154,6 +223,11 @@ namespace EasyAPI
                 return asyncOperation;
             }
 
+            /// <summary>
+            /// Converts a JSON string into a WWWForm.
+            /// </summary>
+            /// <param name="jsonString">The JSON string to convert.</param>
+            /// <returns>The WWWForm created from the JSON string.</returns>
             private static WWWForm ConvertJsonToWWWForm(string jsonString)
             {
                 var wwwForm = new WWWForm();

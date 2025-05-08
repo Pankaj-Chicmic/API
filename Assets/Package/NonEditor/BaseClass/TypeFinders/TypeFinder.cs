@@ -2,19 +2,41 @@ using System;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+
 namespace EasyAPI
 {
+    /// <summary>
+    /// Provides utility methods for finding types and retrieving display names for enums.
+    /// </summary>
     public static class TypeFinder
     {
+        /// <summary>
+        /// Attribute used to assign a display name to an enum field.
+        /// </summary>
         [AttributeUsage(AttributeTargets.Field)]
         public class DisplayNameAttribute : Attribute
         {
+            /// <summary>
+            /// The display name for the enum field.
+            /// </summary>
             public string Name { get; }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DisplayNameAttribute"/> class with the specified display name.
+            /// </summary>
+            /// <param name="Name">The display name for the enum field.</param>
             public DisplayNameAttribute(string Name)
             {
                 this.Name = Name;
             }
         }
+
+        /// <summary>
+        /// Gets the display name of an enum value, if it has a <see cref="DisplayNameAttribute"/> applied.
+        /// Otherwise, returns the enum value's string representation.
+        /// </summary>
+        /// <param name="value">The enum value whose display name is to be retrieved.</param>
+        /// <returns>The display name of the enum value, or its string representation if no display name is found.</returns>
         public static string GetDisplayName(this Enum value)
         {
             var type = value.GetType();
@@ -31,6 +53,16 @@ namespace EasyAPI
                 return value.ToString();
             }
         }
+
+        /// <summary>
+        /// Finds and returns a <see cref="Type"/> by its name, searching through the assemblies of the current app domain.
+        /// </summary>
+        /// <param name="typeName">The name of the type to search for.</param>
+        /// <returns>The <see cref="Type"/> with the specified name, or null if not found.</returns>
+        /// <remarks>
+        /// This method searches all loaded assemblies except those from Unity, System, or Mono.
+        /// It first attempts to find the type case-sensitively, and if not found, tries case-insensitive search.
+        /// </remarks>
         public static Type FindTypeByName(string typeName)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

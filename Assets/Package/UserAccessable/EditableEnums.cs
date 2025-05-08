@@ -37,7 +37,7 @@ Requestresponsebase
     [DisplayName(".com/todos")]
 ComTodos,
     [DisplayName("/access/login")]
-AccessLogin
+AccessLogin,
 }
     }
 }
