@@ -4,15 +4,25 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+
 namespace EasyAPI
 {
     namespace Editor
     {
+        /// <summary>
+        /// A ScriptableObject that manages a list of enum data and provides methods to retrieve enum file paths.
+        /// </summary>
         [CreateAssetMenu(fileName = "EnumRegistry", menuName = "Easy API/Enum Registry", order = 1)]
         public class EnumRegistry : ScriptableObject
         {
             [SerializeField] private List<EnumData> enumEntries = new List<EnumData>();
 
+            /// <summary>
+            /// Attempts to find enum data by its full name and return its associated file path.
+            /// </summary>
+            /// <param name="enumFullName">The full name of the enum to search for.</param>
+            /// <param name="fullPath">The output full file path of the enum script.</param>
+            /// <returns>True if the enum was found and the path was successfully retrieved; otherwise, false.</returns>
             public bool GetEnumData(string enumFullName, out string fullPath)
             {
                 try
@@ -29,6 +39,11 @@ namespace EasyAPI
                 }
             }
 
+            /// <summary>
+            /// Retrieves the full file path for a given MonoScript.
+            /// </summary>
+            /// <param name="script">The MonoScript to retrieve the file path for.</param>
+            /// <returns>The full file path for the given script, or null if an error occurs.</returns>
             public static string GetFullPath(MonoScript script)
             {
                 if (script == null)
@@ -48,11 +63,8 @@ namespace EasyAPI
                 try
                 {
                     string projectRoot = Directory.GetCurrentDirectory();
-
                     string fullPath = Path.Combine(projectRoot, assetPath);
-
                     fullPath = Path.GetFullPath(fullPath);
-
                     return ToRelativeAssetPath(fullPath);
                 }
                 catch (System.Exception ex)
@@ -61,6 +73,13 @@ namespace EasyAPI
                     return null;
                 }
             }
+
+            /// <summary>
+            /// Converts an absolute file path to a relative asset path (relative to the Unity project).
+            /// </summary>
+            /// <param name="fullPath">The absolute file path to convert.</param>
+            /// <returns>The relative asset path starting from the "Assets" folder.</returns>
+            /// <exception cref="ArgumentException">Thrown if the full path does not contain the "Assets" directory.</exception>
             public static string ToRelativeAssetPath(string fullPath)
             {
                 int index = fullPath.IndexOf("Assets", System.StringComparison.OrdinalIgnoreCase);

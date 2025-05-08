@@ -7,8 +7,18 @@ namespace EasyAPI
 {
     namespace Editor
     {
+        /// <summary>
+        /// Provides utility methods for managing EasyAPI-related assets and actions within the Unity editor.
+        /// </summary>
         public static class EasyAPIMenus
         {
+            /// <summary>
+            /// Gets the EnumRegistry instance in the project.
+            /// </summary>
+            /// <remarks>
+            /// This property checks for the existence of an <see cref="EnumRegistry"/> asset in the project,
+            /// ensuring there is exactly one asset available. If multiple assets are found, an error is logged.
+            /// </remarks>
             private static EnumRegistry enumRegistry
             {
                 get
@@ -37,6 +47,10 @@ namespace EasyAPI
                 }
             }
 
+            /// <summary>
+            /// Finds and returns the Settings asset in the project.
+            /// </summary>
+            /// <returns>The <see cref="Settings"/> asset, or null if not found.</returns>
             private static Settings FindAPIDataAsset()
             {
                 string[] guids = AssetDatabase.FindAssets($"t:{nameof(Settings)}");
@@ -57,6 +71,9 @@ namespace EasyAPI
                 return null;
             }
 
+            /// <summary>
+            /// Opens the APIData asset in the editor.
+            /// </summary>
             [MenuItem("Tools/EasyAPI/Settings")]
             public static void SelectAPIData()
             {
@@ -69,20 +86,26 @@ namespace EasyAPI
                 }
             }
 
+            /// <summary>
+            /// Regenerates the APIData and updates associated enums, ensuring no duplicate endpoints exist.
+            /// </summary>
             [MenuItem("Tools/EasyAPI/Save")]
             public static void RegenerateAPIData()
             {
+                // Check for duplicate endpoints in APIData
                 foreach (var item in FindAPIDataAsset().GetEndPoints())
                 {
                     foreach (var itemToTestWith in FindAPIDataAsset().GetEndPoints())
                     {
                         if (item.endPoint == itemToTestWith.endPoint && item != itemToTestWith)
                         {
-                            Debug.LogError($"Failed to update enum. Can not have Two types of same endPoint.Duplicate EndPoint {item.endPoint}");
+                            Debug.LogError($"Failed to update enum. Can not have Two types of same endPoint. Duplicate EndPoint {item.endPoint}");
                             return;
                         }
                     }
                 }
+
+                // Update enums for Payload, Response, and Endpoints
                 string fullPath;
                 if (enumRegistry.GetEnumData(nameof(PayLoadEnum), out fullPath))
                 {
@@ -100,6 +123,7 @@ namespace EasyAPI
                 {
                     Debug.LogError($"Failed to update enum '{nameof(PayLoadEnum)}' via static call. Check previous logs for errors.");
                 }
+
                 if (enumRegistry.GetEnumData(nameof(ResponseEnum), out fullPath))
                 {
                     bool result = EnumInheritanceUpdater.UpdateEnumFromInheritance(nameof(ResponseEnum), fullPath, nameof(RequestResponseBase), false, true);
@@ -116,6 +140,7 @@ namespace EasyAPI
                 {
                     Debug.LogError($"Failed to update enum '{nameof(PayLoadEnum)}' via static call. Check previous logs for errors.");
                 }
+
                 if (enumRegistry.GetEnumData(nameof(RunTime.EndPoints), out fullPath))
                 {
                     List<string> namesOfEnums = new List<string>();
@@ -129,9 +154,13 @@ namespace EasyAPI
                 {
                     Debug.LogError($"Failed to update enum '{nameof(RunTime.PayLoadEnum)}' via static call. Check previous logs for errors.");
                 }
+
                 AssetDatabase.Refresh();
             }
 
+            /// <summary>
+            /// Instantiates the APIManager prefab in the scene.
+            /// </summary>
             [MenuItem("Tools/EasyAPI/API Hander")]
             public static void InstantiateMyPrefab()
             {
