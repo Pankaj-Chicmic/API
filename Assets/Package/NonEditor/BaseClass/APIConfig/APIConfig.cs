@@ -14,7 +14,19 @@ namespace EasyAPI
             [Range(1, 100)]
             public int defaultRetryCount;
             public DataType dataType = DataType.Json;
-            public List<DataTypeAndContentType> dataTypeAndContentTypes;
+            public List<DataTypeAndContentType> dataTypeAndContentTypes = new List<DataTypeAndContentType>()
+            {
+                new DataTypeAndContentType()
+                {
+                    dataType = DataType.Json,
+                    contentType = "application/json",
+                },
+                new DataTypeAndContentType()
+                {
+                    dataType = DataType.Form,
+                    contentType = "application/x-www-form-urlencoded"
+                }
+            };
 
             public string ContentType(DataType dataType)
             {
