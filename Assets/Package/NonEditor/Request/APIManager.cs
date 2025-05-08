@@ -37,7 +37,7 @@ namespace EasyAPI
                         return;
                     }
 
-                    if ((new T2()).GetType().Name != requestClass.responseClass.GetDisplayName())
+                    if (typeof(T2).Name != requestClass.responseClass.GetDisplayName())
                     {
                         HandleOtherResponse(-2, response, $"Wrong Response Type :: Expected {requestClass.responseClass.GetDisplayName()} Has :: {(new T2()).GetType().Name}");
                         return;
