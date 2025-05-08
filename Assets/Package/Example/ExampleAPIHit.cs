@@ -10,27 +10,34 @@ namespace EasyAPI
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    APIManager.Instance.HitAPI<LoginData, UserAccount>(EndPoints.AccessLogin, new LoginData()
-                    {
-                        email = "pankaj.kumar@chicmicstudios.in",
-                        password = "Pankaj$123"
-                    }, null, ResponseListener,
-                    Progress);
+                    APIHitPublic();
                 }
                 if (Input.GetMouseButtonDown(0))
                 {
-                    APIClass aPIClass = new APIClass(EndPoints.AccessLogin, new LoginData()
-                    {
-                        email = "pankaj.kumar@chicmicstudios.in",
-                        password = "Pankaj$123"
-                    });
-
-                    aPIClass.AddResponseListener(ResponseListener);
-                    aPIClass.AddProgressListener(Progress);
-                    aPIClass.HitAPI();
+                    APIHitPublic2();
                 }
             }
+            public void APIHitPublic()
+            {
+                APIManager.Instance.HitAPI<LoginData, UserAccount>(EndPoints.AccessLogin, new LoginData()
+                {
+                    email = "pankaj.kumar@chicmicstudios.in",
+                    password = "Pankaj$123"
+                }, null, ResponseListener,
+                    Progress);
+            }
+            public void APIHitPublic2()
+            {
+                APIClass aPIClass = new APIClass(EndPoints.AccessLogin, new LoginData()
+                {
+                    email = "pankaj.kumar@chicmicstudios.in",
+                    password = "Pankaj$123"
+                });
 
+                aPIClass.AddResponseListener(ResponseListener);
+                aPIClass.AddProgressListener(Progress);
+                aPIClass.HitAPI();
+            }
             private void ResponseListener<T>(T response) where T : RequestResponseBase
             {
                 if (response.success)
