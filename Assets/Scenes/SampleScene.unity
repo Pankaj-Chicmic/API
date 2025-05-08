@@ -668,7 +668,6 @@ GameObject:
   - component: {fileID: 1787891327}
   - component: {fileID: 1787891326}
   - component: {fileID: 1787891325}
-  - component: {fileID: 1787891324}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -696,52 +695,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1787891324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787891322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f354ad4777c0ac4299ad8a05d573386, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allowOnlyOneHitAtATime: 0
-  enableAPI: 1
-  endPoints: 1
-  gotResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 742959634}
-        m_TargetAssemblyTypeName: EasyAPI.Example.ExampleAPIHit, Assembly-CSharp
-        m_MethodName: LoginResponse
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  progress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 742959634}
-        m_TargetAssemblyTypeName: EasyAPI.Example.ExampleAPIHit, Assembly-CSharp
-        m_MethodName: APIPRocessed
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  headerKeysAndValues: []
 --- !u!114 &1787891325
 MonoBehaviour:
   m_ObjectHideFlags: 0

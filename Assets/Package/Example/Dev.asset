@@ -15,3 +15,9 @@ MonoBehaviour:
   baseUrl: https://us-central1-dragonlords-34b68.cloudfunctions.net/app
   defaultRequestTimeout: 8
   defaultRetryCount: 3
+  dataType: 0
+  dataTypeAndContentTypes:
+  - dataType: 0
+    contentType: application/json
+  - dataType: 1
+    contentType: application/x-www-form-urlencoded
