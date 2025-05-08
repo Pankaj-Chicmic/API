@@ -163,23 +163,6 @@ namespace EasyAPI
         }
 
         /// <summary>
-        /// Contains information about an enum, including its full name and associated script.
-        /// </summary>
-        [System.Serializable]
-        public struct EnumData
-        {
-            /// <summary>
-            /// The full name of the enum.
-            /// </summary>
-            public string enumFullName;
-
-            /// <summary>
-            /// The MonoScript associated with the enum.
-            /// </summary>
-            public MonoScript enumFile;
-        }
-
-        /// <summary>
         /// A class that stores an integer value along with a boolean flag for overriding the value.
         /// </summary>
         [System.Serializable]

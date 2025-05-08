@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiConfig: {fileID: 11400000, guid: 0463abb44195cf244851f17b05868728, type: 2}
   endPoints:
-  - endPoint: .com/todos
+  - endPoint: com
     requestTypes: 0
-    payLoadClass: 1
+    payLoadClass: 0
     responseClass: 0
     requestTimeout:
       overrideValue: 0
@@ -26,22 +26,6 @@ MonoBehaviour:
       overridenValue: 1
     dataTypeStruct:
       dataTypeOverride: 0
-      dataType: 0
-    contentTypeStruct:
-      contentTypeOverride: 0
-      contentType: 
-  - endPoint: /access/login
-    requestTypes: 1
-    payLoadClass: 2
-    responseClass: 1
-    requestTimeout:
-      overrideValue: 0
-      overridenValue: 1
-    retryInfo:
-      overrideValue: 0
-      overridenValue: 1
-    dataTypeStruct:
-      dataTypeOverride: 1
       dataType: 0
     contentTypeStruct:
       contentTypeOverride: 0

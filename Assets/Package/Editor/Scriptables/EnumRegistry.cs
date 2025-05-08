@@ -8,7 +8,22 @@ using UnityEngine;
 namespace EasyAPI
 {
     namespace Editor
-    {
+    {   /// <summary>
+        /// Contains information about an enum, including its full name and associated script.
+        /// </summary>
+        [System.Serializable]
+        public struct EnumData
+        {
+            /// <summary>
+            /// The full name of the enum.
+            /// </summary>
+            public string enumFullName;
+
+            /// <summary>
+            /// The MonoScript associated with the enum.
+            /// </summary>
+            public MonoScript enumFile;
+        }
         /// <summary>
         /// A ScriptableObject that manages a list of enum data and provides methods to retrieve enum file paths.
         /// </summary>

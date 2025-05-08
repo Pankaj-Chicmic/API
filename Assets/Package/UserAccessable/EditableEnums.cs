@@ -34,10 +34,8 @@ Requestresponsebase
         public enum EndPoints
         {
 
-    [DisplayName(".com/todos")]
-ComTodos,
-    [DisplayName("/access/login")]
-AccessLogin,
+    [DisplayName("com")]
+Com
 }
     }
 }
