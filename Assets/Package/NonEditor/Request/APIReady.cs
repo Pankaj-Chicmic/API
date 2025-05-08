@@ -89,6 +89,7 @@ namespace EasyAPI
 
             public void RemoveQueryParam(string key)
             {
+                if (queryParams == null) return;
                 queryParams.Remove(key);
             }
             #endregion Params

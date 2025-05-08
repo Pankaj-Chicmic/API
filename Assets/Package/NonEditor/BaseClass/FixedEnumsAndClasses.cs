@@ -46,6 +46,12 @@ namespace EasyAPI
             }
         }
         [Serializable]
+        public class DataTypeAndContentType
+        {
+            public DataType dataType = DataType.Json;
+            public string contentType = "application/json";
+        }
+        [Serializable]
         public class RequestClass
         {
             public string endPoint;

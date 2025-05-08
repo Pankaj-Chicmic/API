@@ -14,36 +14,8 @@ namespace EasyAPI
                     {
                         email = "pankaj.kumar@chicmicstudios.in",
                         password = "Pankaj$123"
-                    }, null, (response) =>
-                    {
-                        if (response.success)
-                        {
-                            Debug.Log($"API Hit is successful, got json Data as  {JsonUtility.ToJson(response)}");
-                        }
-                        else
-                        {
-                            if (response.responseCode == -1)
-                            {
-                                // This Means Error is due to Network
-                                Debug.Log($"API Hit has Failed,\n Response Code is {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
-                            }
-                            else if (response.responseCode == -2)
-                            {
-                                // This Means Error is due to API HIT METHOD CALL
-                                Debug.Log($"API Hit has Failed,\n Response Code is  {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
-                            }
-                            else
-                            {
-                                // This Means Error has come from backend
-                                Debug.Log($"API Hit has Failed,\n Response Code is {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
-                            }
-                        }
-                    }, 
-                    (value) =>
-                    {
-                        Debug.Log(value);
-                    }
-                    );
+                    }, null, ResponseListener,
+                    Progress);
                 }
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -52,37 +24,42 @@ namespace EasyAPI
                         email = "pankaj.kumar@chicmicstudios.in",
                         password = "Pankaj$123"
                     });
-                    aPIClass.AddResponseListener((response) =>
-                    {
-                        if (response.success)
-                        {
-                            Debug.Log($"API Hit is successful, got json Data as  {JsonUtility.ToJson(response)}");
-                        }
-                        else
-                        {
-                            if (response.responseCode == -1)
-                            {
-                                // This Means Error is due to Network
-                                Debug.Log($"API Hit has Failed,\n Response Code is {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
-                            }
-                            else if (response.responseCode == -2)
-                            {
-                                // This Means Error is due to API HIT METHOD CALL
-                                Debug.Log($"API Hit has Failed,\n Response Code is  {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
-                            }
-                            else
-                            {
-                                // This Means Error has come from backend
-                                Debug.Log($"API Hit has Failed,\n Response Code is {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
-                            }
-                        }
-                    });
-                    aPIClass.AddProgressListener((value) =>
-                    {
-                        Debug.Log(value);
-                    });
+
+                    aPIClass.AddResponseListener(ResponseListener);
+                    aPIClass.AddProgressListener(Progress);
                     aPIClass.HitAPI();
                 }
+            }
+
+            private void ResponseListener<T>(T response) where T : RequestResponseBase
+            {
+                if (response.success)
+                {
+                    Debug.Log($"API Hit is successful, got json Data as  {JsonUtility.ToJson(response)}");
+                }
+                else
+                {
+                    if (response.responseCode == -1)
+                    {
+                        // This Means Error is due to Network
+                        Debug.Log($"API Hit has Failed,\n Response Code is {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
+                    }
+                    else if (response.responseCode == -2)
+                    {
+                        // This Means Error is due to API HIT METHOD CALL
+                        Debug.Log($"API Hit has Failed,\n Response Code is  {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
+                    }
+                    else
+                    {
+                        // This Means Error has come from backend
+                        Debug.Log($"API Hit has Failed,\n Response Code is {response.responseCode} \n Failure Message Is {response.failureMessage} \n Json Is {JsonUtility.ToJson(response)}");
+                    }
+                }
+            }
+
+            private void Progress(float value)
+            {
+                Debug.Log(value);
             }
         }
     }

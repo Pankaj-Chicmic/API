@@ -29,11 +29,5 @@ namespace EasyAPI
                 return "application/json";
             }
         }
-        [Serializable]
-        public class DataTypeAndContentType
-        {
-            public DataType dataType = DataType.Json;
-            public string contentType = "application/json";
-        }
     }
 }
