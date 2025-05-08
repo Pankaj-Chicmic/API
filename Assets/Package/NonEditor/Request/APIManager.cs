@@ -26,7 +26,7 @@ namespace EasyAPI
                 return true;
             }
 
-            public void HitAPI<T1, T2>(EndPoints endPoint, T1 payload, List<HeaderKeysAndValue> headerKeysAndValues, Action<T2> response = null, Action<float> progress = null) where T1 : RequestPayloadBase where T2 : RequestResponseBase, new()
+            public void HitAPI<T1, T2>(EndPoints endPoint, T1 payload, List<HeaderKeysAndValue> headerKeysAndValues, Action<T2> response = null, Action<float> progress = null, Dictionary<string, string> queryParams = null) where T1 : RequestPayloadBase where T2 : RequestResponseBase, new()
             {
                 try
                 {
@@ -77,7 +77,7 @@ namespace EasyAPI
                     }
                     headerKeysAndValues.Add(new HeaderKeysAndValue() { key = "Content-Type", value = contentType });
 
-                    KeepSendingRequest(requestClass.requestTypes, dataType, requestTimeout, retryRemaining, requestClass.endPoint, jsonData, headerKeysAndValues, response, progress);
+                    KeepSendingRequest(requestClass.requestTypes, dataType, requestTimeout, retryRemaining, AppendQueryParams(requestClass.endPoint, queryParams), jsonData, headerKeysAndValues, response, progress);
                 }
                 catch (Exception exception)
                 {

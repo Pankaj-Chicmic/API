@@ -40,6 +40,7 @@ namespace EasyAPI
             #endregion Static
 
             private EndPoints endPoints;
+            private Dictionary<string, string> queryParams;
             private List<HeaderKeysAndValue> headerKeysAndValues;
             private RequestPayloadBase payload;
             private Action<RequestResponseBase> gotResponse;
@@ -63,6 +64,34 @@ namespace EasyAPI
             {
                 this.payload = requestPayloadBase;
             }
+
+            #region Params
+
+            public void AddQueryParam(string key, string value)
+            {
+                if (queryParams == null)
+                    queryParams = new Dictionary<string, string>();
+
+                if (queryParams.ContainsKey(key))
+                {
+                    queryParams[key] = value;
+                }
+                else
+                {
+                    queryParams.Add(key, value);
+                }
+            }
+
+            public void ClearQueryParams()
+            {
+                queryParams = new Dictionary<string, string>();
+            }
+
+            public void RemoveQueryParam(string key)
+            {
+                queryParams.Remove(key);
+            }
+            #endregion Params
 
             #region Header
 
@@ -182,7 +211,7 @@ namespace EasyAPI
                 {
                     progress?.Invoke(value);
                 };
-                genericMethod.Invoke(apiManager, new object[] { endPoints, payloadType == PayLoadEnum.None ? null : ConvertPayloadToType(payload, payloadClassType), headerKeysAndValues, callback, _progress });
+                genericMethod.Invoke(apiManager, new object[] { endPoints, payloadType == PayLoadEnum.None ? null : ConvertPayloadToType(payload, payloadClassType), headerKeysAndValues, callback, _progress, queryParams });
             }
 
             private object ConvertPayloadToType(RequestPayloadBase basePayload, Type targetType)

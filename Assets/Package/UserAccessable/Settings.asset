@@ -41,7 +41,7 @@ MonoBehaviour:
       overrideValue: 0
       overridenValue: 1
     dataTypeStruct:
-      dataTypeOverride: 0
+      dataTypeOverride: 1
       dataType: 0
     contentTypeStruct:
       contentTypeOverride: 0
